@@ -1,21 +1,20 @@
 import { ToDoListItem } from './ToDoListItem/ToDoListItem'
 import './ToDoList.scss'
-export const ToDoList = () => {
+import { ToDo } from '../../models/todo-item'
+
+export const ToDoList = (props: { todos: ToDo[]; deleteToDo: Function; updateToDo: Function }) => {
+  const checkedList = (isDone: boolean) => {
+    return props.todos
+      .filter(item => item.isDone === isDone)
+      .map((item, key) => {
+        return <ToDoListItem toDoItem={item} key={key} deleteToDo={props.deleteToDo} updateToDo={props.updateToDo} />
+      })
+  }
+
   return (
     <div className="todo-container">
-      <ul className="todo-list failed">
-        <ToDoListItem />
-      </ul>
-      <ul className="todo-list completed">
-        <ToDoListItem />
-        {/* <li className="todo-list-item__wrapper">
-          <span>Вторая задача</span>
-          <div className="todo-list-item__buttons">
-            <button type="button" className="btn-trash" title="trash"></button>
-            <button type="button" className="btn-uncheck" title="uncheck"></button>
-          </div>
-        </li> */}
-      </ul>
+      <ul className="todo-list failed">{checkedList(false)}</ul>
+      <ul className="todo-list completed">{checkedList(true)}</ul>
     </div>
   )
 }
